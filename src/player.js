@@ -1,4 +1,4 @@
-import GameBoard from "./gameboard";
+import GameBoard from "./gameboard.js";
 
 class Player {
     constructor(type) {
@@ -20,16 +20,17 @@ class Player {
         }
     }
 
-    attack(opponentBoard, coord = null) {
+    attack(opponentPlayer, coord = null) {
         if(coord === null){
             const randomX = 'ABCDEFGHIJ'.split("")[Math.floor(Math.random() * 10)];
             const randomY = Math.floor(Math.random() * 10);
             const randomCoord = {x: randomX, y: randomY};
 
-            this.random.push(randomCoord);
-            opponentBoard.reciveAttck(randomCoord);
+            this.random.push(randomCoord);//for testing
+            opponentPlayer.board.reciveAttack(opponentPlayer, randomCoord);
         }else{
-            opponentBoard.reciveAttck(coord);
+            this.random.push(coord);//for testing
+            opponentPlayer.board.reciveAttack(opponentPlayer, coord);
         }
     }
 }
