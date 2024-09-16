@@ -5,9 +5,57 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script type="module" src="src/index.js"></script>
     <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="src/icons/titlenew.png" type="image/png" sizes="92x92">
     <title>BattleShip</title>
 </head>
 <body>
-    
+    <div class="main-container">
+        <!-- <div class="start-menu"></div> -->
+        <div class="left-board">
+            <div class="user-fleet-name">Your Sea</div>
+            <div class="x-coord">
+                <span>A</span>
+                <span>B</span>
+                <span>C</span>
+                <span>D</span>
+                <span>E</span>
+                <span>F</span>
+                <span>G</span>
+                <span>H</span>
+                <span>I</span>
+                <span>J</span>
+            </div>
+            <div class="user-board"></div>
+            <div class="user-ships">
+                <div class="par destroyer"><p><span>1</span>xDestroyer</p> <span>4</span></div>
+                <div class="par warship"><p><span>2</span>xWarship</p> <span>3</span></div>
+                <div class="par submarine"><p><span>3</span>xSubmarine</p> <span>2</span></div>
+                <div class="par battleboat"><p><span>4</span>xBattle Boat</p><span>1</span></div>
+            </div>
+        </div>
+        <p class="turns">Your Turn</p>
+        <div class="right-board">
+            <div class="op-fleet-name">Opponent Sea</div>
+            <div class="x-coord">
+                <span>A</span>
+                <span>B</span>
+                <span>C</span>
+                <span>D</span>
+                <span>E</span>
+                <span>F</span>
+                <span>G</span>
+                <span>H</span>
+                <span>I</span>
+                <span>J</span>
+            </div>
+            <div class="op-board"></div>
+            <div class="op-ships">
+                <div class="par destroyer"><p><span>1</span>xDestroyer</p> <span>4</span></div>
+                <div class="par warship"><p><span>2</span>xWarship</p> <span>3</span></div>
+                <div class="par submarine"><p><span>3</span>xSubmarine</p> <span>2</span></div>
+                <div class="par battleboat"><p><span>4</span>xBattle Boat</p><span>1</span></div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
