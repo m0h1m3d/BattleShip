@@ -5,14 +5,12 @@ class Ship {
         this.sunk = false;
     }
 
-    hit(ships) {
+    hit() {
         if (this.hits < this.length) {
             this.hits++;
     
             if (this.hits === this.length) {
                 this.sunk = true;
-                const sunkShipIndex = ships.find((ship,i)=> ship.sunk === true ? i : '');
-                ships.splice(sunkShipIndex, 1);
             }
         }
     }
