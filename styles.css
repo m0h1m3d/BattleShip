@@ -18,7 +18,6 @@ body{
     align-self: flex-start;
 }
 
-
 .main-container{
     position: relative;
     height: 95%;
@@ -29,7 +28,7 @@ body{
     justify-content: space-around;
     font-weight: 700;
     font-size: 1rem;
-    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
 
 .par{
@@ -91,11 +90,6 @@ body{
     align-items: center;
 }
 
-.par{
-    display: flex;
-    position: relative;
-}
-
 .op-ships{
     left: 57%;
     background-color: #5f798b;
@@ -144,8 +138,18 @@ body{
 .x-coord{
     align-self: center;
     height: 1px;
-    width: 66%;
+    width: 60%;
     display: flex;
     justify-content: space-between;
-    gap: 39px;
+    gap: 35px;
+}
+
+.attacked{
+    background-image: url('./src/icons/red-dot.png');
+    background-size: cover;
+}
+
+.missed{
+    background-image: url('./src/icons/blue-dot.jpeg');
+    background-size: cover;
 }
