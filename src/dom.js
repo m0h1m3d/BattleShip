@@ -5,6 +5,7 @@ class Dom {
         this.mainContainer = document.querySelector('.main-container');
         this.board = document.querySelector('.user-board');
         this.opBoard = document.querySelector('.op-board');
+        this.gameOver = document.querySelector('.game-over');
         this.letters = 'ABCDEFGHIJ'.split('');
     }
 
@@ -46,13 +47,11 @@ class Dom {
         let cell;
         if (player.type === 'human') {
             cell = this.board.querySelector(`[data-x = "${coord.x}"][data-y = "${coord.y}"]`);
-            cell.style.backgroundColor = 'grey';
+            cell.style.backgroundColor = '#0f4d49';
         } else {
             cell = this.opBoard.querySelector(`[data-x = "${coord.x}"][data-y = "${coord.y}"]`);
             cell.style.backgroundColor = '#8faef9';
         }
-        // if(player.board.coordinates.find(cell => cell.x === coord.x && cell.y === coord.y).ship !== null) return;
-
     }
 
     renderHit(player, coord) {
@@ -70,33 +69,41 @@ class Dom {
         }, 500);
 
         const surrounding = this.surroundingCells(player, coord);
-
-        surrounding.forEach(surCell => {
-            cell = this.opBoard.querySelector(`[data-x = "${surCell.x}"][data-y = "${surCell.y}"]`);
-            
-            if(player.board.coordinates.find(ship => ship.x === surCell.x && ship.y === surCell.y).ship === 'un-available'){
-
-                if(player.board.coordinates.find(ship => ship.x === surCell.x && ship.y === surCell.y).ship.length === 1){
-                    const surrounding = gameboard.surroundingCells(player, {x: surCell.x, y: surCell.y});
-                }
-
-
-                cell.classList.add('missed');
-        cell.style.transform = 'scale(1.1)';
+        for(let surCell of surrounding){
+            if (player.type === 'human'){
+                const elemenet = this.board.querySelector(`[data-x = "${surCell.x}"][data-y = "${surCell.y}"]`); 
+                elemenet.classList.add('missed');
+                elemenet.style.transform = 'scale(1.1)';
+            }else{
+                const elemenet = this.opBoard.querySelector(`[data-x = "${surCell.x}"][data-y = "${surCell.y}"]`); 
+                elemenet.classList.add('missed');
+                elemenet.style.transform = 'scale(1.1)';
             }
-        })
+
+            player.board.coordinates.forEach(cell => {
+                if(cell.x === surCell.x && cell.y === surCell.y) cell.hit = true;
+            })
+        }
     }
 
     renderEmpty(player, coord) {
         let cell;
         if (player.type === 'human') {
             cell = this.board.querySelector(`[data-x = "${coord.x}"][data-y = "${coord.y}"]`);
-        } else {
+        }else{
             cell = this.opBoard.querySelector(`[data-x = "${coord.x}"][data-y = "${coord.y}"]`);
         }
-
+        
         cell.classList.add('missed');
         cell.style.transform = 'scale(1.1)';
+    }
+
+    renderNotEmptyCell(coord){
+        const cell = this.opBoard.querySelector(`[data-x = "${coord.x}"][data-y = "${coord.y}"]`);
+        cell.style.border = '1px solid red';
+        setTimeout(() => {
+            cell.style.border = 'transparent';
+        }, 500);
     }
 
     surroundingCells(player, coord) {
@@ -115,7 +122,28 @@ class Dom {
         return adjacentMoves.filter((move) => letters.includes(move.x) && move.y < 10 && move.y >= 0 && !player.board.coordinates.find(cell => cell.x === move.x && cell.y === move.y).hit);
     }
 
+    resetBoard(player){
+        if(player.type === 'cpu'){
+            this.opBoard.childNodes.forEach(cell=>{
+                cell.classList.remove('attacked');
+                cell.classList.remove('missed');
+                cell.style.transform = 'scale(1)';
+                cell.style.backgroundColor = '#384955';
+            })
+        }else{
+            this.board.childNodes.forEach(cell=>{
+                cell.classList.remove('attacked');
+                cell.classList.remove('missed');
+                cell.style.transform = 'scale(1)';
+                cell.style.backgroundColor = 'lightseagreen';
+            })
+        }
+    }
+
     renderGameOver(player) {
+        setTimeout(() => {
+            this.gameOver.classList.remove('hidden');
+        }, 500);
         console.log('GAME OVER');
     }
 }
