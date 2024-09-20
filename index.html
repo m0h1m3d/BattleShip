@@ -10,8 +10,25 @@
 </head>
 <body>
     <div class="main-container">
-        <audio class="audio" src="./src/icons/music.mp3"></audio>
-        <!-- <div class="start-menu"></div> -->
+        <div class="game-over hidden">
+            <h1>Game Over</h1>
+            <h2><span class="winner">Player</span> Wins!</h2>
+            <div class="options">
+                <button class="menu">Go To Menu</button>
+                <button class="restart">Restart</button>
+            </div>
+        </div>
+        <div class="start-menu hidden">
+            <div class="start-heading">
+                <h1><img src="./src/icons/titlenew.png" alt="ship" height="30">BattleShip</h1>
+                <h2>Destroy Your Enemy's Fleet And Rule The Seas!</h2>
+            </div>
+            <div class="start-btns">
+                <button class="randomize">Change Fleet Position</button>
+                <button class="start-game">Start Attack!</button>
+            </div>
+            <p>Created By <img src="./src/icons/github-logo.png" height="15" alt=""><a href="https://github.com/m0h1m3d" target="_blank">Useful</a></p>
+        </div>
         <div class="left-board">
             <div class="user-fleet-name">Your Sea</div>
             <div class="x-coord">
@@ -28,10 +45,10 @@
             </div>
             <div class="user-board"></div>
             <div class="user-ships">
-                <div class="par destroyer"><p><span>1</span>xDestroyer</p> <span>4</span></div>
-                <div class="par warship"><p><span>2</span>xWarship</p> <span>3</span></div>
-                <div class="par submarine"><p><span>3</span>xSubmarine</p> <span>2</span></div>
-                <div class="par battleboat"><p><span>4</span>xBattle Boat</p><span>1</span></div>
+                <div class="par destroyer"><p><span></span>Destroyer</p> <span>1</span></div>
+                <div class="par warship"><p>Warship</p> <span>2</span></div>
+                <div class="par submarine"><p>Submarine</p> <span>3</span></div>
+                <div class="par battleboat"><p>Battle Boat</p><span>4</span></div>
             </div>
         </div>
         <p class="turns">Your Turn</p>
@@ -51,10 +68,10 @@
             </div>
             <div class="op-board"></div>
             <div class="op-ships">
-                <div class="par destroyer"><p><span>1</span>xDestroyer</p> <span>4</span></div>
-                <div class="par warship"><p><span>2</span>xWarship</p> <span>3</span></div>
-                <div class="par submarine"><p><span>3</span>xSubmarine</p> <span>2</span></div>
-                <div class="par battleboat"><p><span>4</span>xBattle Boat</p><span>1</span></div>
+                <div class="par destroyer"><p><span></span>Destroyer</p> <span>1</span></div>
+                <div class="par warship"><p>Warship</p> <span>2</span></div>
+                <div class="par submarine"><p>Submarine</p> <span>3</span></div>
+                <div class="par battleboat"><p>Battle Boat</p><span>4</span></div>
             </div>
         </div>
     </div>

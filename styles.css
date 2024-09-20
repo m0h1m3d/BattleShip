@@ -38,12 +38,90 @@ body{
     gap: 5px;
 }
 
-.start-menu{
+.start-menu, .game-over{
     position: absolute;
     z-index: 1;
     height: 100%;
     width: inherit;
     background-color:hsl(207, 74%, 92%, 0.5);
+}
+
+.start-menu{
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    flex-direction: column;
+    transition: all 0.5s;
+}
+
+.start-heading{
+    /* background-color: red; */
+    height: 30%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 30px;
+}
+
+.start-btns{
+    /* background-color: red; */
+    height: 20%;
+    width: 45%;
+    display: flex;
+    justify-content: space-around;
+}
+
+.randomize, .start-game{
+    height: 40%;
+    width: 40%;
+    border-radius: 10px;
+    color: #fff;
+    background-color: #283036;
+    cursor: pointer;
+    border: transparent;
+    font-weight: 700;
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    transition: all 0.5s;
+}
+
+.game-over{
+    height: 50%;
+    width: 50%;
+    background-color: #283036;
+    border-radius: 10px;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    flex-direction: column;
+    color: #fff;
+    transition: all 0.5s;
+}
+
+.options{
+    width: 80%;
+    height: 30%;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    border-radius: 10px;
+}
+
+.menu, .restart{
+    height: 40%;
+    width: 40%;
+    font-family: inherit;
+    font-weight: 700;
+    font-size: 1.1rem;
+    border: transparent;
+    border-radius: 10px;
+    cursor: pointer;
+    color: #041e30;
+    transition: all 0.5s;
+}
+
+a{
+    text-decoration: none;
+    color: #363030;
 }
 
 .left-board, .right-board{
@@ -105,6 +183,7 @@ body{
     grid-template-columns: repeat(10, 1fr);
     grid-template-rows: repeat(10, 1fr);
     gap: 5px;
+    transition: opacity 0.5s;
     /* overflow: auto; */
 }
 
@@ -152,4 +231,16 @@ body{
 .missed{
     background-image: url('./src/icons/blue-dot.jpeg');
     background-size: cover;
+}
+
+.hidden{
+    transform: translateX(-100vw);
+}
+
+.pre-start{
+    opacity: 0.1;
+}
+
+.fade{
+    opacity: 0.6;
 }
