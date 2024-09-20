@@ -5,21 +5,17 @@ class Player {
     constructor(type, board) {
         this.type = type;
         this.board = board;
-        this.random = [] //for testing
+        this.random = [];
     }
 
-    placeShip(ship, coord = null) {
+    placeShip(ship) {
         const player = this;
-        if (coord === null) {
-            const randomX = 'ABCDEFGHIJ'.split("")[Math.floor(Math.random() * 10)];
-            const randomY = Math.floor(Math.random() * 10);
-            const randomCoord = { x: randomX, y: randomY };
-            
-            this.random.push(randomCoord);
-            this.board.placeShip(player,randomCoord, ship);
-        } else {
-            this.board.placeShip(player,coord, ship);
-        }
+        const randomX = 'ABCDEFGHIJ'.split("")[Math.floor(Math.random() * 10)];
+        const randomY = Math.floor(Math.random() * 10);
+        const randomCoord = { x: randomX, y: randomY };
+
+        this.random.push(randomCoord);
+        this.board.placeShip(player, randomCoord, ship);
     }
 
     attack(opponentPlayer, coord = null) {
@@ -28,13 +24,17 @@ class Player {
             const randomY = Math.floor(Math.random() * 10);
             const randomCoord = { x: randomX, y: randomY };
 
-            this.random.push(randomCoord);//for testing
             opponentPlayer.board.reciveAttack(opponentPlayer, randomCoord);
         } else {
-            this.random.push(coord);//for testing
             opponentPlayer.board.reciveAttack(opponentPlayer, coord);
         }
     }
+
+    resetBoard() {
+        this.random.length = 0;
+        this.board.reset();
+    }
+
 }
 
 export default Player;
