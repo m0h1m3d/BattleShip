@@ -4,7 +4,8 @@ class GameBoard {
     constructor() {
         this.size = 10;
         this.coordinates = this.generateBoard();
-        this.ships = []
+        this.ships = [];
+        this.attacked = [];
     }
 
     generateBoard() {
@@ -65,6 +66,7 @@ class GameBoard {
             let cell = player.board.coordinates.find(cell => cell.x === newCoord.x && cell.y === newCoord.y);
 
             cell.ship = ship;
+            if (player.type === 'cpu') continue;
             Dom.placeShip(player, newCoord);
         }
 
@@ -78,54 +80,47 @@ class GameBoard {
             }
         });
 
-        if (!this.ships.some(storedShip => storedShip.length === ship.length)) {
-            this.ships.push(ship)
-        }
+        
+        this.ships.push(ship)
     }
 
     reciveAttack(opponentPlayer, coord) {
         let cell = this.coordinates.find(cell => cell.x === coord.x && cell.y === coord.y);
-
+        
         if (cell.hit === true) {
-            console.log('cant hit twice');
-            return null;
-        } else if (cell.ship && cell.ship !== 'un-available') {
-            cell.hit = true;
-            cell.ship.hit();
-            Dom.renderHit(opponentPlayer, coord);
-            console.log('hit');
-
-            if (opponentPlayer.type === 'cpu') {
-                const adjacentCells = this.surrounding(coord);
-
-                const validNextHitCoord = adjacentCells.filter(adjCell => {
-                    cell = this.coordinates.find(cell => adjCell.x === cell.x && adjCell.y === cell.y);
-                    console.log(cell);
-                    return cell.hit === false && cell.ship !== 'un-available';
-                });
-
-
-                if (validNextHitCoord.length > 0) {
-                    const randomHitCoord = validNextHitCoord[Math.floor(Math.random() * validNextHitCoord.length)];
-                    console.log(randomHitCoord);
-
-                    opponentPlayer.board.reciveAttack(opponentPlayer, randomHitCoord);
-                } else {
-                    console.log("No valid adjacent cells to attack.");
-                    const randomX = 'ABCDEFGHIJ'.split("")[Math.floor(Math.random() * 10)];
-                    const randomY = Math.floor(Math.random() * 10);
-                    const randomCoord = { x: randomX, y: randomY };
-                    opponentPlayer.board.reciveAttack(opponentPlayer, randomCoord);
-                }
+            if (opponentPlayer.type === 'human') {
+                console.log('hit  twice at', coord);
+                const randomX = 'ABCDEFGHIJ'.split("")[Math.floor(Math.random() * 10)];
+                const randomY = Math.floor(Math.random() * 10);
+                const randomCoord = { x: randomX, y: randomY };
+                
+                this.attacked.pop();
+                this.attacked.push(randomCoord);
+                opponentPlayer.board.reciveAttack(opponentPlayer, randomCoord);
+                return;
+            } else {
+                Dom.renderNotEmptyCell(coord);
+                return;
             }
-
-            if (this.allShipsSunk(opponentPlayer.board)) {
-                Dom.renderGameOver(opponentPlayer);
-            }
-
         } else {
-            this.missed(coord);
-            Dom.renderEmpty(opponentPlayer, coord);
+            if (cell.ship && cell.ship !== 'un-available' && cell.ship !== 'empty' && cell.hit !== true) {
+                cell.hit = true;
+                cell.ship.hit(opponentPlayer.board);
+                Dom.renderHit(opponentPlayer, coord);
+                opponentPlayer.board.attacked.pop();
+                opponentPlayer.board.attacked.push(coord);
+
+                if (this.allShipsSunk()) {
+                    console.log('game over');
+                    Dom.renderGameOver(opponentPlayer);
+                }
+
+            } else {
+                opponentPlayer.board.attacked.pop();
+                opponentPlayer.board.attacked.push(coord);
+                this.missed(coord);
+                Dom.renderEmpty(opponentPlayer, coord);
+            }
         }
     }
 
@@ -185,14 +180,25 @@ class GameBoard {
     }
 
     missed(coord) {
-
         const cell = this.coordinates.find(cell => coord.x === cell.x && coord.y === cell.y);
         cell.hit = true;
         cell.ship = 'empty';
     }
 
-    allShipsSunk(board) {
-        return board.ships.every(ship => ship.sunk === true);
+    allShipsSunk() {
+       return this.ships.length === 0 ? true : false
+    }
+
+    reset() {
+        this.ships.forEach(ship => {
+            ship.hits = 0;
+            ship.sunk = false;
+        })
+
+        this.coordinates.forEach(coord => {
+            coord.ship = null;
+            coord.hit = false;
+        });
     }
 }
 
