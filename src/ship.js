@@ -1,3 +1,4 @@
+import Dom from "./dom.js";
 class Ship {
     constructor(length) {
         this.length = length;
@@ -5,18 +6,18 @@ class Ship {
         this.sunk = false;
     }
 
-    hit() {
+    hit(player) {
         if (this.hits < this.length) {
             this.hits++;
     
             if (this.hits === this.length) {
                 this.sunk = true;
+                Dom.shipSunk(player, this);
+
+                const index = player.board.ships.indexOf(this);
+                player.board.ships.splice(index, 1);
             }
         }
-    }
-
-    isSunk() {
-        return this.sunk;
     }
 }
 
