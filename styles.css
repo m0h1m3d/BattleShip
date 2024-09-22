@@ -12,6 +12,7 @@ body{
     background-color: #ddedfa;
     margin-left: 10px;
     margin-top: 10px;
+    overflow: hidden;
 }
 
 .logo{
