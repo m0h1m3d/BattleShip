@@ -64,14 +64,14 @@ class GameBoard {
         for (let i = 0; i < ship.length; i++) {
             const newCoord = shipCells[i];
             let cell = player.board.coordinates.find(cell => cell.x === newCoord.x && cell.y === newCoord.y);
-
+            
             cell.ship = ship;
-            if (player.type === 'cpu') continue;
+            // if (player.type === 'cpu') continue;
             Dom.placeShip(player, newCoord);
         }
-
+        
         const surroundingCells = this.getShipSurroundingCells(shipCells);
-
+        
         player.board.coordinates.forEach(cell => {
             for (let surCell of surroundingCells) {
                 if (cell.x === surCell.x && cell.y === surCell.y) {
@@ -79,11 +79,11 @@ class GameBoard {
                 }
             }
         });
-
         
-        this.ships.push(ship)
+        
+        this.ships.push(ship);
     }
-
+    
     reciveAttack(opponentPlayer, coord) {
         let cell = this.coordinates.find(cell => cell.x === coord.x && cell.y === coord.y);
         
@@ -96,7 +96,7 @@ class GameBoard {
                 
                 this.attacked.pop();
                 this.attacked.push(randomCoord);
-                opponentPlayer.board.reciveAttack(opponentPlayer, randomCoord);
+                this.reciveAttack(opponentPlayer, randomCoord);
                 return;
             } else {
                 Dom.renderNotEmptyCell(coord);
@@ -105,66 +105,74 @@ class GameBoard {
         } else {
             if (cell.ship && cell.ship !== 'un-available' && cell.ship !== 'empty' && cell.hit !== true) {
                 cell.hit = true;
-                cell.ship.hit(opponentPlayer.board);
+                cell.ship.hit(opponentPlayer);
                 Dom.renderHit(opponentPlayer, coord);
-                opponentPlayer.board.attacked.pop();
-                opponentPlayer.board.attacked.push(coord);
+                this.attacked.pop();
+                this.attacked.push(coord);
 
                 if (this.allShipsSunk()) {
-                    console.log('game over');
                     Dom.renderGameOver(opponentPlayer);
                 }
 
             } else {
-                opponentPlayer.board.attacked.pop();
-                opponentPlayer.board.attacked.push(coord);
+                this.attacked.pop();
+                this.attacked.push(coord);
                 this.missed(coord);
                 Dom.renderEmpty(opponentPlayer, coord);
             }
         }
     }
 
-    surroundingCells(coord) {
+    surroundingCells(coord, direction = null) {
         const letters = 'ABCDEFGHIJ'.split("");
         const indexOfX = letters.indexOf(coord.x);
 
         const y = coord.y;
+        if(direction === 'all'){
 
-        const adjacentMoves = [
-            { x: letters[indexOfX + 1], y },
-            { x: letters[indexOfX + 1], y: y - 1 },
-            { x: letters[indexOfX], y: y - 1 },
-            { x: letters[indexOfX - 1], y: y - 1 },
-            { x: letters[indexOfX - 1], y },
-            { x: letters[indexOfX - 1], y: y + 1 },
-            { x: letters[indexOfX], y: y + 1 },
-            { x: letters[indexOfX + 1], y: y + 1 }
-        ];
+            const adjacentMoves = [
+                { x: letters[indexOfX + 1], y },
+                { x: letters[indexOfX + 1], y: y - 1 },
+                { x: letters[indexOfX], y: y - 1 },
+                { x: letters[indexOfX - 1], y: y - 1 },
+                { x: letters[indexOfX - 1], y },
+                { x: letters[indexOfX - 1], y: y + 1 },
+                { x: letters[indexOfX], y: y + 1 },
+                { x: letters[indexOfX + 1], y: y + 1 }
+            ];
+            
+            return adjacentMoves.filter((move) => letters.includes(move.x) && move.y < this.size && move.y >= 0 && !this.coordinates.find(cell => cell.x === move.x && cell.y === move.y).hit);
 
-        return adjacentMoves.filter((move) => letters.includes(move.x) && move.y < this.size && move.y >= 0 && !this.coordinates.find(cell => cell.x === move.x && cell.y === move.y).hit);
-    }
+        }else if(direction === 'diagonal'){
 
-    surrounding(coord) {
-        const letters = 'ABCDEFGHIJ'.split("");
-        const indexOfX = letters.indexOf(coord.x);
+            const adjacentMoves = [
+                { x: letters[indexOfX + 1], y: y - 1 },
+                { x: letters[indexOfX - 1], y: y - 1 },
+                { x: letters[indexOfX - 1], y: y + 1 },
+                { x: letters[indexOfX + 1], y: y + 1 }
+            ];
+    
+            return adjacentMoves.filter((move) => letters.includes(move.x) && move.y < 10 && move.y >= 0 && !this.coordinates.find(cell => cell.x === move.x && cell.y === move.y).hit);
 
-        const y = coord.y;
+        }else{
 
-        const adjacentMoves = [
-            { x: letters[indexOfX + 1], y },
-            { x: letters[indexOfX], y: y - 1 },
-            { x: letters[indexOfX - 1], y },
-            { x: letters[indexOfX], y: y + 1 },
-        ];
+            const adjacentMoves = [
+                { x: letters[indexOfX + 1], y },
+                { x: letters[indexOfX], y: y - 1 },
+                { x: letters[indexOfX - 1], y },
+                { x: letters[indexOfX], y: y + 1 },
+            ];
+        
+            return adjacentMoves.filter((move) => letters.includes(move.x) && move.y < this.size && move.y >= 0 && !this.coordinates.find(cell => cell.x === move.x && cell.y === move.y).hit);
 
-        return adjacentMoves.filter((move) => letters.includes(move.x) && move.y < this.size && move.y >= 0 && !this.coordinates.find(cell => cell.x === move.x && cell.y === move.y).hit);
+        }
     }
 
     getShipSurroundingCells(shipCells) {
         const surroundingCells = new Set();
 
         shipCells.forEach(cell => {
-            const surrounding = this.surroundingCells(cell);
+            const surrounding = this.surroundingCells(cell, 'all');
             surrounding.forEach(coord => {
                 const cell = this.coordinates.find(c => c.x === coord.x && c.y === coord.y);
                 if (cell && !shipCells.some(shipCell => shipCell.x === cell.x && shipCell.y === cell.y)) {
@@ -175,7 +183,7 @@ class GameBoard {
 
         return Array.from(surroundingCells).map(cell => {
             const [x, y] = cell.split('-');
-            return { x, y: parseInt(y) };
+            return { x, y: +y };
         });
     }
 
@@ -190,10 +198,7 @@ class GameBoard {
     }
 
     reset() {
-        this.ships.forEach(ship => {
-            ship.hits = 0;
-            ship.sunk = false;
-        })
+        this.ships.length = 0;
 
         this.coordinates.forEach(coord => {
             coord.ship = null;
