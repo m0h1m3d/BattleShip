@@ -1,6 +1,3 @@
-import Dom from "./dom.js";
-import GameBoard from "./gameboard.js";
-
 class Player {
     constructor(type, board) {
         this.type = type;
