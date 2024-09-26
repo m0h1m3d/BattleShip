@@ -10,13 +10,15 @@ body{
     justify-content: center;
     align-items: center;
     background-color: #ddedfa;
-    margin-left: 10px;
-    margin-top: 10px;
     overflow: hidden;
 }
 
 .logo{
     align-self: flex-start;
+}
+
+img{
+    border-radius: 50%;
 }
 
 .main-container{
@@ -258,4 +260,22 @@ a{
 
 .destroyer, .warship, .submarine, .battleboat{
     transition: all 0.5s;
+}
+
+.message{
+    display: none;
+}
+
+@media (max-width: 1100px) {
+    body{
+        margin: 0 20%;
+    }
+
+    .main-container{
+        display: none;
+    }
+
+    .message{
+        display: block;
+    }
 }
