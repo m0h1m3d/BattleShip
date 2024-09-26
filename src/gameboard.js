@@ -66,7 +66,7 @@ class GameBoard {
             let cell = player.board.coordinates.find(cell => cell.x === newCoord.x && cell.y === newCoord.y);
             
             cell.ship = ship;
-            // if (player.type === 'cpu') continue;
+            if (player.type === 'cpu') continue;
             Dom.placeShip(player, newCoord);
         }
         
